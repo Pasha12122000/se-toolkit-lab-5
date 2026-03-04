@@ -37,8 +37,8 @@
     - [1.14.1. (UPD) Connect `pgAdmin` to the database](#1141-upd-connect-pgadmin-to-the-database)
     - [1.14.2. (UPD) Inspect the tables](#1142-upd-inspect-the-tables)
   - [1.15. (UPD) Stop the services](#115-upd-stop-the-services)
-  - [1.16. Set up the autochecker](#116-set-up-the-autochecker)
-  - [1.17. (UPD) Set up a coding agent](#117-upd-set-up-a-coding-agent)
+  - [1.16. (UPD) Set up a coding agent](#116-upd-set-up-a-coding-agent)
+  - [1.17. Set up the autochecker](#117-set-up-the-autochecker)
   - [1.18. Check the setup using the autochecker](#118-check-the-setup-using-the-autochecker)
 - [2. Optional steps](#2-optional-steps)
   - [2.1. (UPD) Set up `Nix`](#21-upd-set-up-nix)
@@ -405,11 +405,7 @@ Make sure the services are running. Go back to [step 1.11.2](#1112-upd-start-the
 1. [Check that the current directory is `se-toolkit-lab-4`](../../wiki/shell.md#check-the-current-directory-is-directory-name).
 2. [Stop and remove all containers and volumes](../../wiki/docker-compose.md#stop-and-remove-all-containers-and-volumes).
 
-### 1.16. Set up the autochecker
-
-[Set up the autochecker](../../wiki/autochecker.md#set-up-autochecker)
-
-### 1.17. (UPD) Set up a coding agent
+### 1.16. (UPD) Set up a coding agent
 
 A coding agent can help you write code, explain concepts, and debug issues.
 
@@ -421,9 +417,13 @@ A coding agent can help you write code, explain concepts, and debug issues.
 - Method 1: [Set up a `Qwen Code`-based agent](../../wiki/coding-agents.md#set-up-qwen-code-based-agent).
 - Method 2: [Choose another coding agent](../../wiki/coding-agents.md#choose-a-coding-agent).
 
+### 1.17. Set up the autochecker
+
+[Set up the autochecker](../../wiki/autochecker.md#set-up-the-autochecker)
+
 ### 1.18. Check the setup using the autochecker
 
-[Check the task using the autochecker `Telegram` bot](../../../wiki/autochecker.md#check-the-task-using-the-autochecker-bot).
+[Check the task using the autochecker `Telegram` bot](../../wiki/autochecker.md#check-the-task-using-the-autochecker-bot).
 
 ---
 
