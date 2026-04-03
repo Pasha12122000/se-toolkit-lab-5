@@ -392,18 +392,20 @@ Make sure the services are running. Go back to [step 1.11.2](#1112-upd-start-the
 
 #### 1.14.2. (UPD) Inspect the tables
 
-1. [Browse the data in the `interacts` table](../../wiki/pgadmin.md#browse-data-in-the-table).
+1. Verify that the following tables exist:
+   - `interacts`
+   - `item`
+   - `learner`
 
-   You should see rows of data stored in the database.
+2. [Browse the data in the `interacts` table](../../wiki/pgadmin.md#browse-data-in-the-table).
+
+   In this lab, the database starts empty.
+   It is normal if the table has no rows yet.
 
    <img alt="Interaction logs" src="../images/tasks/setup/database-interaction-logs.png" style="width:400px"></img>
 
-   These are records of what [`learner`s](../../docs/design/domain-model.md#learner) did with [`item`s](../../docs/design/domain-model.md#item) (courses, labs, tasks, steps).
-   `learner`s [`attempt`ed](../../docs/design/domain-model.md#attempt), [`complete`d](../../docs/design/domain-model.md#complete) or just [`view`ed](../../docs/design/domain-model.md#view) `item`s.
-
-2. Verify that the following tables also exist:
-   - `item`
-   - `learner`
+> [!NOTE]
+> You will populate these tables later in [Task 1](./required/task-1.md#14-part-b-build-the-pipeline) when you implement and run the ETL pipeline.
 
 ### 1.15. (UPD) Stop the services
 

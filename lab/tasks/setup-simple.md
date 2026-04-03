@@ -1,83 +1,82 @@
 # Lab setup
 
 - [1. Required steps](#1-required-steps)
-  - [1.1. Clean up Lab 4 (on your VM)](#11-clean-up-lab-4-on-your-vm)
-  - [1.2. Set up your fork (in github)](#12-set-up-your-fork-in-github)
+  - [1.1. Clean up Lab 4 on your VM](#11-clean-up-lab-4-on-your-vm)
+  - [1.2. Set up your fork on `GitHub`](#12-set-up-your-fork-on-github)
     - [1.2.1. Fork the course instructors' repo](#121-fork-the-course-instructors-repo)
     - [1.2.2. Go to your fork](#122-go-to-your-fork)
     - [1.2.3. Enable issues](#123-enable-issues)
     - [1.2.4. Add a classmate as a collaborator](#124-add-a-classmate-as-a-collaborator)
     - [1.2.5. Protect your `main` branch](#125-protect-your-main-branch)
-  - [1.3. Clone your fork and set up the environment (on your laptop)](#13-clone-your-fork-and-set-up-the-environment-on-your-laptop)
-  - [1.4. Start the services locally (on your laptop)](#14-start-the-services-locally-on-your-laptop)
+  - [1.3. Clone your fork and configure the local environment](#13-clone-your-fork-and-configure-the-local-environment)
+  - [1.4. Start the services locally](#14-start-the-services-locally)
   - [1.5. Deploy to your VM](#15-deploy-to-your-vm)
-    - [1.5.1. Connect to your VM and get the repo there](#151-connect-to-your-vm-and-get-the-repo-there)
-    - [1.5.2. Prepare the environment (on the VM)](#152-prepare-the-environment-on-the-vm)
-    - [1.5.3. Start the services (on the VM)](#153-start-the-services-on-the-vm)
+    - [1.5.1. Connect to your VM and clone the repo](#151-connect-to-your-vm-and-clone-the-repo)
+    - [1.5.2. Configure the environment on the VM](#152-configure-the-environment-on-the-vm)
+    - [1.5.3. Start the services on the VM](#153-start-the-services-on-the-vm)
   - [1.6. Verify the deployment](#16-verify-the-deployment)
-  - [1.7 Set up Qwen Code](#17-set-up-qwen-code)
+  - [1.7. Set up a coding agent](#17-set-up-a-coding-agent)
+  - [1.8. Set up the autochecker](#18-set-up-the-autochecker)
 
 ## 1. Required steps
 
 > [!NOTE]
 > This lab builds on the same tools and setup from Lab 4.
 > If you completed Lab 4, most tools are already installed.
-> The main changes are: a new repo, new environment variables, and cleaning up old containers.
+> The main changes are: a new repo, `Autochecker` API credentials for the ETL pipeline, and a fresh deployment for Lab 5.
 
 > [!NOTE]
-> This lab needs your university email, github alias, and VM IP in Autochecker bot <https://t.me/auchebot>. If you haven't entered, then do so. If you want to change something contact your TA.
+> This lab uses your university email, `GitHub` username, `Telegram` alias, and VM IP in the autochecker bot.
+> If you have not registered them yet, do that in [step 1.8](#18-set-up-the-autochecker).
 
-### 1.1. Clean up Lab 4 (on your VM)
+### 1.1. Clean up Lab 4 on your VM
 
 > [!IMPORTANT]
-> Remove Lab 4 containers and volumes to free up ports and disk space on your VM.
+> Remove Lab 4 containers and volumes to free ports and disk space on your VM before deploying Lab 5.
 
-1. [Connect to your VM](../../wiki/vm.md#connect-to-the-vm).
-2. Navigate to the Lab 4 project directory,
+1. [Connect to your VM](../../wiki/ssh.md#connect-to-the-vm).
+2. To go to the Lab 4 project directory,
 
-   run in the VM:
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
-   cd se-toolkit-lab-4
+   cd ~/se-toolkit-lab-4
    ```
 
-3. Stop and remove all Lab 4 containers and volumes,
+3. To stop and remove the Lab 4 containers and volumes,
 
-   run in the VM:
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
    docker compose --env-file .env.docker.secret down -v
    ```
 
-   you should see something like:
+4. To go back to your home directory,
 
-   ```
-   [+] down 6/6
-   ✔ Container se-toolkit-lab-4-caddy-1    Removed                                                                            1.3ss
-   ✔ Container se-toolkit-lab-4-pgadmin-1  Removed                                                                            3.4ss
-   ✔ Container se-toolkit-lab-4-app-1      Removed                                                                            11.1s
-   ✔ Container se-toolkit-lab-4-postgres-1 Removed                                                                            1.5s
-   ✔ Volume se-toolkit-lab-4_postgres_data Removed                                                                            0.1s
-   ✔ Network se-toolkit-lab-4_default      Removed                                                                            0.2s
-   ```
-
-4. Go back to the home directory:
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
    cd ~
    ```
 
-### 1.2. Set up your fork (in github)
+> [!TIP]
+> If `~/se-toolkit-lab-4` does not exist on the VM, you can skip this step.
+
+### 1.2. Set up your fork on `GitHub`
 
 #### 1.2.1. Fork the course instructors' repo
 
-1. Fork the [lab's repo](https://github.com/inno-se-toolkit/se-toolkit-lab-5).
+1. [Fork the course instructors' repo](../../wiki/github.md#fork-a-repo).
 
-We refer to your fork as `fork` and to the original repo as `upstream` (выше по течению).
+   The course instructors' repo URL is <https://github.com/inno-se-toolkit/se-toolkit-lab-5>.
+
+We refer to your fork as `fork` and to the original repo as `upstream`.
 
 #### 1.2.2. Go to your fork
 
-1. Go to your fork, it should look like `https://github.com/<your-github-username>/se-toolkit-lab-5`.
+1. [Go to your fork](../../wiki/github.md#go-to-your-fork).
+
+   The URL of your fork should look like `https://github.com/<your-github-username>/se-toolkit-lab-5`.
 
 #### 1.2.3. Enable issues
 
@@ -85,186 +84,76 @@ We refer to your fork as `fork` and to the original repo as `upstream` (выше
 
 #### 1.2.4. Add a classmate as a collaborator
 
-1. [Add a collaborator](../../wiki/github.md#add-a-collaborator) — your partner from Lab 4.
+1. [Add a collaborator](../../wiki/github.md#add-a-collaborator) — your partner.
 2. Your partner should add you as a collaborator in their repo.
 
 #### 1.2.5. Protect your `main` branch
 
-1. [Protect a branch](../../wiki/github.md#protect-a-branch).
+1. [Protect the `main` branch](../../wiki/github.md#protect-a-branch).
 
-### 1.3. Clone your fork and set up the environment (on your laptop)
+### 1.3. Clone your fork and configure the local environment
 
-1. Clone your fork to your local machine.
+1. To clone your fork on your computer,
 
-  ```terminal
-  git clone https://github.com/<your-github-username>/se-toolkit-lab-5
-  ```
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
-1. Open the forked repo in `VS Code`.
+   ```terminal
+   git clone https://github.com/<your-github-username>/se-toolkit-lab-5.git
+   ```
 
-2. Go to `VS Code Terminal`, [check that the current directory is `se-toolkit-lab-5`](../../wiki/shell.md#check-the-current-directory-is-directory-name), and install `Python` dependencies:
+2. [Open in `VS Code` the directory](../../wiki/vs-code.md#open-the-directory):
+   `se-toolkit-lab-5`.
+3. [Check the current shell in the `VS Code Terminal`](../../wiki/vs-code.md#check-the-current-shell-in-the-vs-code-terminal).
+4. To install the `Python` dependencies,
+
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
    uv sync --dev
    ```
 
-3. Create the environment files:
+5. To create the [`Docker Compose` environment file](../../wiki/dotenv-docker-secret.md#what-is-envdockersecret),
+
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
    cp .env.docker.example .env.docker.secret
    ```
 
-4. Configure the autochecker API credentials.
+6. Open [`.env.docker.secret`](../../wiki/dotenv-docker-secret.md#what-is-envdockersecret).
+7. Set [`AUTOCHECKER_EMAIL`](../../wiki/dotenv-docker-secret.md#autochecker_email) to your university email.
+8. Set [`AUTOCHECKER_PASSWORD`](../../wiki/dotenv-docker-secret.md#autochecker_password) to `<your-github-username><your-telegram-alias>`.
 
-   The ETL pipeline fetches data from the autochecker dashboard API.
-   You need to set your credentials in both environment files.
+   Example: if your `GitHub` username is `johndoe` and your `Telegram` alias is `jdoe`, the password is `johndoejdoe`.
 
-   Open `.env.docker.secret` (created from `.env.docker.example`) and set:
+9. Set [`API_KEY`](../../wiki/dotenv-docker-secret.md#api_key) to a secret value that you will use in [`Swagger UI`](../../wiki/swagger.md#authorize-in-swagger-ui).
 
-   ```text
-   AUTOCHECKER_EMAIL=<your-email>@innopolis.university
-   AUTOCHECKER_PASSWORD=<your-github-username><your-telegram-alias>
-   ```
+> [!IMPORTANT]
+> The values of [`AUTOCHECKER_EMAIL`](../../wiki/dotenv-docker-secret.md#autochecker_email) and [`AUTOCHECKER_PASSWORD`](../../wiki/dotenv-docker-secret.md#autochecker_password) must match your autochecker bot registration.
 
-   Example: if your GitHub username is `johndoe` and your Telegram alias is `jdoe`, the password is `johndoejdoe`.
+> [!TIP]
+> Unless you have a reason to change them, keep the default values of [`CADDY_HOST_PORT`](../../wiki/dotenv-docker-secret.md#caddy_host_port), [`PGADMIN_HOST_PORT`](../../wiki/dotenv-docker-secret.md#pgadmin_host_port), and the database settings.
 
-   Open `.env.docker.secret` and set the same values:
-
-   ```text
-   AUTOCHECKER_EMAIL=<your-email>@innopolis.university
-   AUTOCHECKER_PASSWORD=<your-github-username><your-telegram-alias>
-   ```
-
-   > [!IMPORTANT]
-   > The credentials must match your autochecker bot registration.
-   > If you haven't registered with the autochecker bot, see [step 1.7](#17-set-up-qwen-code).
-
-### 1.4. Start the services locally (on your laptop)
+### 1.4. Start the services locally
 
 1. [Start `Docker`](../../wiki/docker.md#start-docker).
+2. To start the services in the background,
 
-2. To start the services,
-
-   run in the `VS Code Terminal`:
-
-   ```terminal
-   docker compose --env-file .env.docker.secret up --build
-   ```
-
-   Wait for the services to start. You should see log output from the `app`, `postgres`, `pgadmin`, and `caddy` containers.
-
-   <details><summary><b>Troubleshooting (click to open)</b></summary>
-
-   <h4>Port conflict (<code>port is already allocated</code>)</h4>
-
-   Stop the process that uses the port, then retry.
-
-   <h4>Containers exit immediately</h4>
-
-   To rebuild all containers from scratch,
-
-   run in the `VS Code Terminal`:
-
-   ```terminal
-   docker compose --env-file .env.docker.secret down -v
-   docker compose --env-file .env.docker.secret up --build
-   ```
-
-   </details>
-
-3. Open in a browser: [http://localhost:42002/docs](http://localhost:42002/docs).
-
-   You should see the [`Swagger UI`](../../wiki/swagger.md#what-is-swagger-ui) page with the API documentation.
-
-4. [Authorize](../../wiki/swagger.md#authorize-in-swagger-ui) with the [`API_KEY`](../../wiki/dotenv-docker-secret.md#api_key) from `.env.docker.secret`.
-
-> [!NOTE]
-> The database starts empty — there is no seed data.
-> All data will be populated by the ETL pipeline in Task 1.
-
-### 1.5. Deploy to your VM
-
-#### 1.5.1. Connect to your VM and get the repo there
-
-1. Connect to your VM through `VS Code Terminal`.
-
-   ```terminal
-   ssh <vm-user>@<vm-ip>
-   ```
-
-   e.g. ssh my-vm-user@10.93.1.1
-
-   If unable, see [how to connect to vm](../../wiki/vm.md#connect-to-the-vm)
-
-2. To clone your fork on the VM,
-
-   replace <github-username> and run in the `VS Code Terminal`:
-
-   ```terminal
-   cd ~
-   git clone https://github.com/<github-username>/se-toolkit-lab-5.git
-   ```
-
-3. To navigate to the project directory,
-
-   run in the `VS Code Terminal`:
-
-   ```terminal
-   cd se-toolkit-lab-5
-   ```
-
-#### 1.5.2. Prepare the environment (on the VM)
-
-1. To create the `Docker` environment file,
-
-   run in the `VS Code Terminal` connected to your VM:
-
-   ```terminal
-   cp .env.docker.example .env.docker.secret
-   ```
-
-2. Edit `.env.docker.secret` and set your autochecker API credentials:
-
-    Open the file with `nano`:
-
-    ```terminal
-    nano .env.docker.secret 
-    ```
-  
-    Edit the two fields:
-
-     ```text
-     AUTOCHECKER_EMAIL=<your-email>@innopolis.university
-     AUTOCHECKER_PASSWORD=<your-github-username><your-telegram-alias>
-     ```
-
-    Also set your API key, so that only authorized users can access it.
-
-    ```text
-    API_KEY=set-it-to-something-and-remember-it
-    ```
-  
-    Then save the edit by pressing `CTRL X` then type letter `y` and press `ENTER`.
-
-    > It is useful to remember how to view and edit files with `nano` or another similar tool, it's a common operation.
-
-#### 1.5.3. Start the services (on the VM)
-
-1. To start the services in [background](../../wiki/operating-system.md#background-process), run in the `VS Code Terminal`:
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
    docker compose --env-file .env.docker.secret up --build -d
    ```
 
-2. To check that the containers are running,
+3. To check that the containers are running,
 
-   run in the `VS Code Terminal`:
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
    docker compose --env-file .env.docker.secret ps --format "table {{.Service}}\t{{.Status}}"
    ```
 
-   You should see all four services running with the status `Up`:
+   You should see all four services running with status `Up`:
 
    ```terminal
    SERVICE    STATUS
@@ -274,81 +163,155 @@ We refer to your fork as `fork` and to the original repo as `upstream` (выше
    postgres   Up 55 seconds (healthy)
    ```
 
-   <details><summary><b>Troubleshooting (click to open)</b></summary>
+4. Open `http://127.0.0.1:42002/docs` in a browser.
 
-   <h4>Port conflict (<code>port is already allocated</code>)</h4>
+   If you changed [`CADDY_HOST_PORT`](../../wiki/dotenv-docker-secret.md#caddy_host_port) in [`.env.docker.secret`](../../wiki/dotenv-docker-secret.md#what-is-envdockersecret), use your value instead of `42002`.
 
-   [Clean up `Docker`](../../wiki/docker.md#clean-up-docker), then run the `docker compose up` command again.
+5. [Authorize in `Swagger UI`](../../wiki/swagger.md#authorize-in-swagger-ui) with your [`API_KEY`](../../wiki/dotenv-docker-secret.md#api_key).
 
-   <h4>Containers exit immediately</h4>
+> [!NOTE]
+> The database starts empty in this lab.
+> You will populate it in [Task 1](./required/task-1.md#14-part-b-build-the-pipeline) by calling `POST /pipeline/sync`.
 
-   To rebuild all containers from scratch,
+<details><summary><b>Troubleshooting (click to open)</b></summary>
+
+<h4>Port conflict (<code>port is already allocated</code>)</h4>
+
+[Clean up `Docker`](../../wiki/docker.md#clean-up-docker), then run the `docker compose up` command again.
+
+<h4>Containers exit immediately</h4>
+
+To rebuild all containers from scratch,
+
+[run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+```terminal
+docker compose --env-file .env.docker.secret down -v
+docker compose --env-file .env.docker.secret up --build -d
+```
+
+</details>
+
+### 1.5. Deploy to your VM
+
+#### 1.5.1. Connect to your VM and clone the repo
+
+1. [Connect to your VM](../../wiki/ssh.md#connect-to-the-vm).
+2. To clone your fork on the VM,
 
    [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
 
    ```terminal
-   docker compose --env-file .env.docker.secret down -v
+   git clone https://github.com/<your-github-username>/se-toolkit-lab-5.git ~/se-toolkit-lab-5
+   ```
+
+3. To go to the project directory on the VM,
+
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+   ```terminal
+   cd ~/se-toolkit-lab-5
+   ```
+
+#### 1.5.2. Configure the environment on the VM
+
+1. To create the VM copy of [`.env.docker.secret`](../../wiki/dotenv-docker-secret.md#what-is-envdockersecret),
+
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+   ```terminal
+   cp .env.docker.example .env.docker.secret
+   ```
+
+2. To open the environment file for editing,
+
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+   ```terminal
+   nano .env.docker.secret
+   ```
+
+3. Set [`AUTOCHECKER_EMAIL`](../../wiki/dotenv-docker-secret.md#autochecker_email) to the same value as on your computer.
+4. Set [`AUTOCHECKER_PASSWORD`](../../wiki/dotenv-docker-secret.md#autochecker_password) to the same value as on your computer.
+5. Set [`API_KEY`](../../wiki/dotenv-docker-secret.md#api_key) to the same value as on your computer, or choose another value that you will remember for VM testing.
+6. Save the file and exit `nano`.
+
+> [!TIP]
+> In `nano`, press `Ctrl+X`, then `Y`, then `Enter` to save and exit.
+
+#### 1.5.3. Start the services on the VM
+
+1. To start the services on the VM in the background,
+
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+   ```terminal
    docker compose --env-file .env.docker.secret up --build -d
    ```
 
-   </details>
+2. To check that the containers are running on the VM,
+
+   [run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+   ```terminal
+   docker compose --env-file .env.docker.secret ps --format "table {{.Service}}\t{{.Status}}"
+   ```
+
+   You should see all four services running with status `Up`.
+
+<details><summary><b>Troubleshooting (click to open)</b></summary>
+
+<h4>Port conflict (<code>port is already allocated</code>)</h4>
+
+On the VM, stop the old Lab 4 deployment first. See [step 1.1](#11-clean-up-lab-4-on-your-vm).
+
+<h4>Containers exit immediately</h4>
+
+To rebuild all containers from scratch on the VM,
+
+[run in the `VS Code Terminal`](../../wiki/vs-code.md#run-a-command-in-the-vs-code-terminal):
+
+```terminal
+docker compose --env-file .env.docker.secret down -v
+docker compose --env-file .env.docker.secret up --build -d
+```
+
+</details>
 
 ### 1.6. Verify the deployment
 
-1. Open in a browser: `http://<your-vm-ip-address>:<caddy-port>/docs`.
+1. Open `http://<your-vm-ip-address>:<caddy-port>/docs` in a browser.
 
-   e.g. [http://10.93.x.x:42002/docs](http://10.93.x.x:42002/docs)
+   Replace:
 
-   > You set caddy port in `.env.docker.secret`, by default it is 42002.
+   - [`<your-vm-ip-address>`](../../wiki/vm.md#your-vm-ip-address).
+   - `<caddy-port>` with the value of [`CADDY_HOST_PORT`](../../wiki/dotenv-docker-secret.md#caddy_host_port) in [`.env.docker.secret`](../../wiki/dotenv-docker-secret.md#what-is-envdockersecret) (default: `42002`).
 
-   You should see the `Swagger UI` page with endpoints including `/pipeline/sync` and `/analytics/`.
+   Example: `http://192.0.2.1:42002/docs`.
 
-2. [Authorize in Swagger](../../wiki/swagger.md#authorize-in-swagger-ui) with `API_KEY` you have in `.env.docker.secret`.
+2. [Authorize in `Swagger UI`](../../wiki/swagger.md#authorize-in-swagger-ui) with your [`API_KEY`](../../wiki/dotenv-docker-secret.md#api_key).
+3. Try `GET /items/`.
 
-   > You can check both the `API_KEY` and `caddy-port` by opening the env file on VM:
-   > `nano .env.docker.secret`, then when done close it with `CLTR X`
+   You should get an empty array `[]`.
 
-3. Try the `GET /items/` endpoint.
+> [!NOTE]
+> Seeing `[]` here is expected.
+> The ETL pipeline that populates the database is implemented later in [Task 1](./required/task-1.md#14-part-b-build-the-pipeline).
 
-   You should get an empty array `[]` — the database has no data yet.
+### 1.7. Set up a coding agent
 
-### 1.7 Set up Qwen Code
+A coding agent will help you implement the ETL pipeline, analytics endpoints, and dashboard faster.
 
-`Qwen Code` is a coding agent we'll use to make your life easier. It works in Russia without VPN and has a free tier.
+<!-- no toc -->
+- Method 1: [Set up `Qwen Code`](../../wiki/qwen.md#set-up-qwen-code).
+- Method 2: [Choose another coding agent](../../wiki/coding-agents.md#choose-and-use-a-coding-agent).
 
-1. Create an account in [Qwen Chat](https://chat.qwen.ai/?mode=register)
-2. Install `Qwen code` on your local machine.
+### 1.8. Set up the autochecker
 
-  Linux / macOS:
+1. [Set up the autochecker](../../wiki/autochecker.md#set-up-the-autochecker).
+2. Make sure your university email, `GitHub` username, and VM IP are registered in the bot.
 
-  ```bash
-  curl -fsSL https://qwen-code-assets.oss-cn-hangzhou.aliyuncs.com/installation/install-qwen.sh | bash
-  ```
-  
-  Windows (Run as Administrator CMD):
+---
 
-  ```cmd
-  curl -fsSL -o %TEMP%\install-qwen.bat https://qwen-code-assets.oss-cn-hangzhou.aliyuncs.com/installation/install-qwen.bat && %TEMP%\install-qwen.bat
-  ```
-  
-  > **Note**: It's recommended to restart your terminal after installation to ensure environment variables take effect.
-
-1. Now launch `Qwen code` in Terminal on your laptop:
-
-  ```terminal
-  qwen
-  ```
-  
-  And authenticate with your Qwen Chat OAuth option following the instructions.
-  
-  You can now ask it, for example:
-
-  ```
-  What is this lab supposed to teach me?
-  ```
-  
-  > **Note**: It is my personal preference to use terminal version of the agent, yet there are other ways to use it as an VS Code extension, read more here if interested: [AI coding agent setup](../../wiki/coding-agents.md)
-
-----
-
-🎉 Congrats! You are done with the setup! Now the tasks should go smoothly. Go to [tasks](https://github.com/inno-se-toolkit/se-toolkit-lab-5/tree/main?tab=readme-ov-file#tasks).
+You are ready to start the lab tasks.
+Continue with [Task 1](./required/task-1.md).
