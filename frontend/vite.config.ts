@@ -20,6 +20,7 @@ export default defineConfig(({ mode }) => {
     server: {
       proxy: {
         "/items": { target, changeOrigin: true },
+        "/analytics": { target, changeOrigin: true },
         "/learners": { target, changeOrigin: true },
         "/interactions": { target, changeOrigin: true },
         "/docs": { target, changeOrigin: true },

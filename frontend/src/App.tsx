@@ -1,7 +1,9 @@
-import { useState, useEffect, useReducer, FormEvent } from 'react'
+import { useEffect, useReducer, useState, FormEvent } from 'react'
 import './App.css'
+import Dashboard from './Dashboard'
 
 const STORAGE_KEY = 'api_key'
+type Page = 'items' | 'dashboard'
 
 interface Item {
   id: number
@@ -37,6 +39,7 @@ function App() {
     () => localStorage.getItem(STORAGE_KEY) ?? '',
   )
   const [draft, setDraft] = useState('')
+  const [page, setPage] = useState<Page>('items')
   const [fetchState, dispatch] = useReducer(fetchReducer, { status: 'idle' })
 
   useEffect(() => {
@@ -88,39 +91,73 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="app-shell">
       <header className="app-header">
-        <h1>Items</h1>
-        <button className="btn-disconnect" onClick={handleDisconnect}>
-          Disconnect
-        </button>
+        <div>
+          <p className="eyebrow">Learning Management Service</p>
+          <h1>{page === 'items' ? 'Items explorer' : 'Analytics dashboard'}</h1>
+        </div>
+
+        <div className="header-actions">
+          <nav className="page-switcher" aria-label="Primary">
+            <button
+              className={page === 'items' ? 'is-active' : ''}
+              onClick={() => setPage('items')}
+              type="button"
+            >
+              Items
+            </button>
+            <button
+              className={page === 'dashboard' ? 'is-active' : ''}
+              onClick={() => setPage('dashboard')}
+              type="button"
+            >
+              Dashboard
+            </button>
+          </nav>
+
+          <button className="btn-disconnect" onClick={handleDisconnect}>
+            Disconnect
+          </button>
+        </div>
       </header>
 
-      {fetchState.status === 'loading' && <p>Loading...</p>}
-      {fetchState.status === 'error' && <p>Error: {fetchState.message}</p>}
+      {page === 'items' && (
+        <section className="panel items-panel">
+          <div className="panel-header">
+            <h2>Available items</h2>
+            <p>Use this view to inspect the raw catalog returned by the API.</p>
+          </div>
 
-      {fetchState.status === 'success' && (
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>ItemType</th>
-              <th>Title</th>
-              <th>Created at</th>
-            </tr>
-          </thead>
-          <tbody>
-            {fetchState.items.map((item) => (
-              <tr key={item.id}>
-                <td>{item.id}</td>
-                <td>{item.type}</td>
-                <td>{item.title}</td>
-                <td>{item.created_at}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          {fetchState.status === 'loading' && <p>Loading...</p>}
+          {fetchState.status === 'error' && <p>Error: {fetchState.message}</p>}
+
+          {fetchState.status === 'success' && (
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Item type</th>
+                  <th>Title</th>
+                  <th>Created at</th>
+                </tr>
+              </thead>
+              <tbody>
+                {fetchState.items.map((item) => (
+                  <tr key={item.id}>
+                    <td>{item.id}</td>
+                    <td>{item.type}</td>
+                    <td>{item.title}</td>
+                    <td>{item.created_at}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </section>
       )}
+
+      {page === 'dashboard' && <Dashboard token={token} />}
     </div>
   )
 }
