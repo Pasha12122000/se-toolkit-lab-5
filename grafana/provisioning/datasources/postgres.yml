@@ -1,0 +1,20 @@
+apiVersion: 1
+
+datasources:
+  - name: Lab5 PostgreSQL
+    uid: lab5-postgres
+    type: postgres
+    access: proxy
+    url: postgres:5432
+    user: postgres
+    secureJsonData:
+      password: postgres
+    jsonData:
+      database: db-lab-5
+      sslmode: disable
+      postgresVersion: 1500
+      timescaledb: false
+      connMaxLifetime: 14400
+      maxOpenConns: 100
+      maxIdleConns: 100
+    isDefault: true
